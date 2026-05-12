@@ -10,7 +10,13 @@ const proyectoService = (() => {
     const obtenerProyectos = () => [...proyectos];
 
     const agregarProyecto = (proyecto) => {
-        proyectos = [...proyectos, proyecto];
+        if (!proyecto.titulo || proyecto.titulo.trim() === "") {
+            return obtenerProyectos();
+        }
+        
+        const nuevoId = proyectos.length > 0 ? Math.max(...proyectos.map(p => p.id)) + 1 : 1;
+        
+        proyectos = [...proyectos, { ...proyecto, id: nuevoId }];
         return obtenerProyectos();
     };
 
@@ -20,8 +26,11 @@ const proyectoService = (() => {
     };
 
     const buscarProyecto = (texto) => {
+        const query = texto.trim().toLowerCase();
+        
         return proyectos.filter((proyecto) =>
-            proyecto.titulo.toLowerCase().includes(texto.toLowerCase())
+            proyecto.titulo.toLowerCase().includes(query) || 
+            proyecto.categoria.toLowerCase().includes(query)
         );
     };
 

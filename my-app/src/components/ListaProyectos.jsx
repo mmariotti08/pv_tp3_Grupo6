@@ -1,5 +1,6 @@
 import { useState } from "react";
 import proyectoService from "../services/proyectoService";
+import ProyectoCard from "./ProyectoCard"; 
 
 const ListaProyectos = () => {
     const [proyectos, setProyectos] = useState(proyectoService.obtenerProyectos());
@@ -86,15 +87,13 @@ const ListaProyectos = () => {
             </form>
 
             <div className="contenedor-proyectos">
+                {/* EL CAMBIO ESTÁ ACÁ: Renderizamos usando el componente de presentación */}
                 {proyectos.map((proyecto) => (
-                    <article className="card-proyecto" key={proyecto.id}>
-                        <h3>{proyecto.titulo}</h3>
-                        <p><strong>Categoría:</strong> {proyecto.categoria}</p>
-                        <p><strong>Estado:</strong> {proyecto.estado}</p>
-                        <button onClick={() => manejarEliminar(proyecto.id)}>
-                            Eliminar
-                        </button>
-                    </article>
+                    <ProyectoCard 
+                        key={proyecto.id} 
+                        proyecto={proyecto} 
+                        alEliminar={manejarEliminar} 
+                    />
                 ))}
             </div>
         </section>

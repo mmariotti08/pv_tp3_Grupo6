@@ -1,11 +1,9 @@
-
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f0f4f8; 
     color: #333;
 }
-
 
 header {
     background-color: #003366; 
@@ -54,7 +52,6 @@ footer {
     margin-top: 2rem;
 }
 
-
 .lista-proyectos h2 {
     color: #003366;
     border-bottom: 2px solid #00509d;
@@ -99,7 +96,6 @@ form button {
 form button:hover {
     background-color: #003366;
 }
-
 
 .contenedor-proyectos {
     display: grid;

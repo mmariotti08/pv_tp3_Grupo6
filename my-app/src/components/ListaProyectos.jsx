@@ -1,6 +1,7 @@
 import { useState } from "react";
 import proyectoService from "../services/proyectoService";
 import ProyectoCard from "./ProyectoCard"; 
+import RegistroActividad from "./RegistroActividad";
 
 const ListaProyectos = () => {
     const [proyectos, setProyectos] = useState(proyectoService.obtenerProyectos());
@@ -8,6 +9,7 @@ const ListaProyectos = () => {
     const [titulo, setTitulo] = useState("");
     const [categoria, setCategoria] = useState("");
     const [estado, setEstado] = useState("");
+    const [ultimaModificacion, setUltimaModificacion] = useState(null);
 
     const manejarBusqueda = (evento) => {
         const texto = evento.target.value;
@@ -43,11 +45,17 @@ const ListaProyectos = () => {
         setCategoria("");
         setEstado("");
         setBusqueda("");
+
+        setUltimaModificacion(new Date());
+
     };
 
     const manejarEliminar = (id) => {
         const listaActualizada = proyectoService.eliminarProyecto(id);
         setProyectos(listaActualizada);
+
+        setUltimaModificacion(new Date());
+        
     };
 
     return (
@@ -96,6 +104,7 @@ const ListaProyectos = () => {
                     />
                 ))}
             </div>
+            <RegistroActividad ultimaModificacion={ultimaModificacion} />
         </section>
     );
 };

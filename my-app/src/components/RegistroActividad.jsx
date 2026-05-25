@@ -1,23 +1,27 @@
-const RegistroActividad = ({ fecha }) => {
+import '../css/RegistroActividad.css'; 
 
-    if (!fecha) {
-        return null;
+const RegistroActividad = ({ ultimaModificacion }) => {
+    
+    if (!ultimaModificacion) {
+        return (
+            <div className="registro-actividad">
+                <p>Aún no hay modificaciones en los proyectos.</p>
+            </div>
+        );
     }
 
-    const fechaFormateada = fecha.toLocaleDateString("es-AR");
-
-    const horaFormateada = fecha.toLocaleTimeString(
-        "es-AR",
-        {
-            hour: "2-digit",
-            minute: "2-digit"
-        }
-    );
+    
+    const fechaFormateada = new Date(ultimaModificacion).toLocaleString('es-AR', {
+        dateStyle: 'short',
+        timeStyle: 'medium'
+    });
 
     return (
-        <p>
-            Última actualización de la lista: {fechaFormateada} a las {horaFormateada} hs.
-        </p>
+        <div className="registro-actividad">
+            <p>
+                <strong>Última modificación:</strong> {fechaFormateada}
+            </p>
+        </div>
     );
 };
 

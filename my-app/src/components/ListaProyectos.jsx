@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import proyectoService from "../services/proyectoService";
 import ProyectoCard from "./ProyectoCard"; 
+import DetalleProyecto from "./DetalleProyecto"; 
 import RegistroActividad from "./RegistroActividad";
 
 const ListaProyectos = () => {
@@ -10,17 +11,20 @@ const ListaProyectos = () => {
     const [categoria, setCategoria] = useState("");
     const [estado, setEstado] = useState("");
     const [ultimaModificacion, setUltimaModificacion] = useState(null);
+    const [proyectoSeleccionado, setProyectoSeleccionado] = useState(null);
+
+    const esPrimerRender = useRef(true);
+
+    useEffect(() => {
+        if (esPrimerRender.current) {
+            esPrimerRender.current = false;
+            return;
+        }
+        setUltimaModificacion(new Date());
+    }, [proyectos]);
 
     const manejarBusqueda = (evento) => {
-        const texto = evento.target.value;
-
-        setBusqueda(texto);
-
-        if (texto.trim() === "") {
-            setProyectos(proyectoService.obtenerProyectos());
-        } else {
-            setProyectos(proyectoService.buscarProyecto(texto));
-        }
+        setBusqueda(evento.target.value);
     };
 
     const manejarAgregar = (evento) => {
@@ -32,7 +36,6 @@ const ListaProyectos = () => {
         }
 
         const nuevoProyecto = {
-            id: Date.now(),
             titulo,
             categoria,
             estado
@@ -45,18 +48,25 @@ const ListaProyectos = () => {
         setCategoria("");
         setEstado("");
         setBusqueda("");
-
-        setUltimaModificacion(new Date());
-
     };
 
     const manejarEliminar = (id) => {
         const listaActualizada = proyectoService.eliminarProyecto(id);
+        
         setProyectos(listaActualizada);
 
-        setUltimaModificacion(new Date());
-        
+        if (proyectoSeleccionado?.id === id) {
+            setProyectoSeleccionado(null);
+        }
     };
+
+    const proyectosFiltrados = proyectos.filter((proyecto) => {
+        const query = busqueda.toLowerCase().trim();
+        return (
+            proyecto.titulo.toLowerCase().includes(query) ||
+            proyecto.categoria.toLowerCase().includes(query)
+        );
+    });
 
     return (
         <section className="lista-proyectos">
@@ -64,7 +74,7 @@ const ListaProyectos = () => {
 
             <input
                 type="text"
-                placeholder="Buscar proyecto por título..."
+                placeholder="Buscar proyecto por título o categoría..."
                 value={busqueda}
                 onChange={manejarBusqueda}
             />
@@ -95,15 +105,21 @@ const ListaProyectos = () => {
             </form>
 
             <div className="contenedor-proyectos">
-                {/* EL CAMBIO ESTÁ ACÁ: Renderizamos usando el componente de presentación */}
-                {proyectos.map((proyecto) => (
+                {proyectosFiltrados.map((proyecto) => (
                     <ProyectoCard 
                         key={proyecto.id} 
                         proyecto={proyecto} 
-                        alEliminar={manejarEliminar} 
+                        onEliminar={manejarEliminar} 
+                        onDetalle={setProyectoSeleccionado} 
                     />
                 ))}
             </div>
+
+            <DetalleProyecto 
+                proyecto={proyectoSeleccionado} 
+                onCerrar={() => setProyectoSeleccionado(null)} 
+            />
+
             <RegistroActividad ultimaModificacion={ultimaModificacion} />
         </section>
     );

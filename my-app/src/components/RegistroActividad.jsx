@@ -1,7 +1,7 @@
-import '../css/RegistroActividad.css'; 
+import "../css/RegistroActividad.css";
 
 const RegistroActividad = ({ ultimaModificacion }) => {
-    
+
     if (!ultimaModificacion) {
         return (
             <div className="registro-actividad">
@@ -10,16 +10,22 @@ const RegistroActividad = ({ ultimaModificacion }) => {
         );
     }
 
-    
-    const fechaFormateada = new Date(ultimaModificacion).toLocaleString('es-AR', {
-        dateStyle: 'short',
-        timeStyle: 'medium'
-    });
+    const fecha = new Date(ultimaModificacion);
+
+    const fechaFormateada = fecha.toLocaleDateString("es-AR");
+
+    const horaFormateada = fecha.toLocaleTimeString(
+        "es-AR",
+        {
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
 
     return (
         <div className="registro-actividad">
             <p>
-                <strong>Última modificación:</strong> {fechaFormateada}
+                Última actualización de la lista: {fechaFormateada} a las {horaFormateada} hs.
             </p>
         </div>
     );

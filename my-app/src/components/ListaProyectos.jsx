@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import proyectoService from "../services/proyectoService";
 import ProyectoCard from "./ProyectoCard";
 import RegistroActividad from "./RegistroActividad";
@@ -12,8 +12,14 @@ const ListaProyectos = () => {
     const [busqueda, setBusqueda] = useState("");
     const [titulo, setTitulo] = useState("");
     const [categoria, setCategoria] = useState("");
-    const [estado, setEstado] = useState("");
-    const [ultimaModificacion, setUltimaModificacion] = useState(null);
+    const [estado, setEstado] = useState(""); 
+    const [ultimaActualizacion, setUltimaActualizacion] = useState(null);
+
+    useEffect(() => {
+    const fechaActual = new Date();
+    setUltimaActualizacion(fechaActual);
+}, [proyectos]);
+   
 
     const manejarBusqueda = (evento) => {
         const texto = evento.target.value;

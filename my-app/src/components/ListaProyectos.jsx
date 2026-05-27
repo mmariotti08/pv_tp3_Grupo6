@@ -55,7 +55,7 @@ const ListaProyectos = () => {
         }
     };
 
-    /
+    
     const proyectosFiltrados = proyectos.filter((proyecto) => {
         const query = busqueda.toLowerCase().trim();
         return (
@@ -90,13 +90,15 @@ const ListaProyectos = () => {
                     />
                 ))}
             </div>
+            
+            <RegistroActividad ultimaModificacion={ultimaModificacion} />
 
             <DetalleProyecto 
                 proyecto={proyectoSeleccionado} 
                 onCerrar={() => setProyectoSeleccionado(null)} 
             />
 
-            <RegistroActividad ultimaModificacion={ultimaModificacion} />
+            
         </section>
     );
 };

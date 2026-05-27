@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import proyectoService from "../services/proyectoService";
-import ProyectoCard from "./ProyectoCard";
+import ProyectoCard from "./ProyectoCard"; 
+import DetalleProyecto from "./DetalleProyecto"; 
 import RegistroActividad from "./RegistroActividad";
 import FormularioProyecto from "./FormularioProyecto";
 
@@ -13,24 +14,22 @@ const ListaProyectos = () => {
     const [titulo, setTitulo] = useState("");
     const [categoria, setCategoria] = useState("");
     const [estado, setEstado] = useState(""); 
-    const [ultimaActualizacion, setUltimaActualizacion] = useState(null);
+    const [ultimaModificacion, setUltimaModificacion] = useState(null);
+    const [proyectoSeleccionado, setProyectoSeleccionado] = useState(null);
 
+    const esPrimerRender = useRef(true);
+
+ 
     useEffect(() => {
-    const fechaActual = new Date();
-    setUltimaActualizacion(fechaActual);
-}, [proyectos]);
-   
+        if (esPrimerRender.current) {
+            esPrimerRender.current = false;
+            return;
+        }
+        setUltimaModificacion(new Date());
+    }, [proyectos]);
 
     const manejarBusqueda = (evento) => {
-        const texto = evento.target.value;
-
-        setBusqueda(texto);
-
-        if (texto.trim() === "") {
-            setProyectos(proyectoService.obtenerProyectos());
-        } else {
-            setProyectos(proyectoService.buscarProyecto(texto));
-        }
+        setBusqueda(evento.target.value);
     };
 
     const manejarAgregar = (nuevoProyectoFormulario) => {
@@ -44,16 +43,26 @@ const ListaProyectos = () => {
 
         setProyectos(listaActualizada);
         setBusqueda("");
-        setUltimaModificacion(new Date());
     };
 
     const manejarEliminar = (id) => {
-        const listaActualizada =
-            proyectoService.eliminarProyecto(id);
-
+        const listaActualizada = proyectoService.eliminarProyecto(id);
+        
         setProyectos(listaActualizada);
-        setUltimaModificacion(new Date());
+
+        if (proyectoSeleccionado?.id === id) {
+            setProyectoSeleccionado(null);
+        }
     };
+
+    /
+    const proyectosFiltrados = proyectos.filter((proyecto) => {
+        const query = busqueda.toLowerCase().trim();
+        return (
+            proyecto.titulo.toLowerCase().includes(query) ||
+            proyecto.categoria.toLowerCase().includes(query)
+        );
+    });
 
     return (
         <section className="lista-proyectos">
@@ -62,7 +71,7 @@ const ListaProyectos = () => {
 
             <input
                 type="text"
-                placeholder="Buscar proyecto por título..."
+                placeholder="Buscar proyecto por título o categoría..."
                 value={busqueda}
                 onChange={manejarBusqueda}
             />
@@ -72,16 +81,20 @@ const ListaProyectos = () => {
             />
 
             <div className="contenedor-proyectos">
-
-                {proyectos.map((proyecto) => (
-                    <ProyectoCard
-                        key={proyecto.id}
-                        proyecto={proyecto}
-                        alEliminar={manejarEliminar}
+                {proyectosFiltrados.map((proyecto) => (
+                    <ProyectoCard 
+                        key={proyecto.id} 
+                        proyecto={proyecto} 
+                        alEliminar={manejarEliminar} 
+                        onDetalle={setProyectoSeleccionado} 
                     />
                 ))}
-
             </div>
+
+            <DetalleProyecto 
+                proyecto={proyectoSeleccionado} 
+                onCerrar={() => setProyectoSeleccionado(null)} 
+            />
 
             <RegistroActividad ultimaModificacion={ultimaModificacion} />
         </section>

@@ -3,18 +3,23 @@ import proyectoService from "../services/proyectoService";
 import ProyectoCard from "./ProyectoCard"; 
 import DetalleProyecto from "./DetalleProyecto"; 
 import RegistroActividad from "./RegistroActividad";
+import FormularioProyecto from "./FormularioProyecto";
 
 const ListaProyectos = () => {
-    const [proyectos, setProyectos] = useState(proyectoService.obtenerProyectos());
+    const [proyectos, setProyectos] = useState(
+        proyectoService.obtenerProyectos()
+    );
+
     const [busqueda, setBusqueda] = useState("");
     const [titulo, setTitulo] = useState("");
     const [categoria, setCategoria] = useState("");
-    const [estado, setEstado] = useState("");
+    const [estado, setEstado] = useState(""); 
     const [ultimaModificacion, setUltimaModificacion] = useState(null);
     const [proyectoSeleccionado, setProyectoSeleccionado] = useState(null);
 
     const esPrimerRender = useRef(true);
 
+ 
     useEffect(() => {
         if (esPrimerRender.current) {
             esPrimerRender.current = false;
@@ -27,26 +32,16 @@ const ListaProyectos = () => {
         setBusqueda(evento.target.value);
     };
 
-    const manejarAgregar = (evento) => {
-        evento.preventDefault();
-
-        if (titulo.trim() === "" || categoria.trim() === "" || estado.trim() === "") {
-            alert("Complete todos los campos");
-            return;
-        }
-
+    const manejarAgregar = (nuevoProyectoFormulario) => {
         const nuevoProyecto = {
-            titulo,
-            categoria,
-            estado
+            id: Date.now(),
+            ...nuevoProyectoFormulario
         };
 
-        const listaActualizada = proyectoService.agregarProyecto(nuevoProyecto);
+        const listaActualizada =
+            proyectoService.agregarProyecto(nuevoProyecto);
 
         setProyectos(listaActualizada);
-        setTitulo("");
-        setCategoria("");
-        setEstado("");
         setBusqueda("");
     };
 
@@ -60,6 +55,7 @@ const ListaProyectos = () => {
         }
     };
 
+    /
     const proyectosFiltrados = proyectos.filter((proyecto) => {
         const query = busqueda.toLowerCase().trim();
         return (
@@ -70,6 +66,7 @@ const ListaProyectos = () => {
 
     return (
         <section className="lista-proyectos">
+
             <h2>Lista de Proyectos</h2>
 
             <input
@@ -79,37 +76,16 @@ const ListaProyectos = () => {
                 onChange={manejarBusqueda}
             />
 
-            <form onSubmit={manejarAgregar}>
-                <input
-                    type="text"
-                    placeholder="Título"
-                    value={titulo}
-                    onChange={(evento) => setTitulo(evento.target.value)}
-                />
-
-                <input
-                    type="text"
-                    placeholder="Categoría"
-                    value={categoria}
-                    onChange={(evento) => setCategoria(evento.target.value)}
-                />
-
-                <input
-                    type="text"
-                    placeholder="Estado"
-                    value={estado}
-                    onChange={(evento) => setEstado(evento.target.value)}
-                />
-
-                <button type="submit">Agregar proyecto</button>
-            </form>
+            <FormularioProyecto
+                alAgregarProyecto={manejarAgregar}
+            />
 
             <div className="contenedor-proyectos">
                 {proyectosFiltrados.map((proyecto) => (
                     <ProyectoCard 
                         key={proyecto.id} 
                         proyecto={proyecto} 
-                        onEliminar={manejarEliminar} 
+                        alEliminar={manejarEliminar} 
                         onDetalle={setProyectoSeleccionado} 
                     />
                 ))}

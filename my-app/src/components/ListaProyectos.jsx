@@ -10,6 +10,9 @@ const ListaProyectos = () => {
     );
 
     const [busqueda, setBusqueda] = useState("");
+    const [titulo, setTitulo] = useState("");
+    const [categoria, setCategoria] = useState("");
+    const [estado, setEstado] = useState("");
     const [ultimaModificacion, setUltimaModificacion] = useState(null);
 
     const manejarBusqueda = (evento) => {
@@ -34,7 +37,6 @@ const ListaProyectos = () => {
             proyectoService.agregarProyecto(nuevoProyecto);
 
         setProyectos(listaActualizada);
-
         setBusqueda("");
         setUltimaModificacion(new Date());
     };
@@ -44,7 +46,6 @@ const ListaProyectos = () => {
             proyectoService.eliminarProyecto(id);
 
         setProyectos(listaActualizada);
-
         setUltimaModificacion(new Date());
     };
 
@@ -76,10 +77,7 @@ const ListaProyectos = () => {
 
             </div>
 
-            <RegistroActividad
-                ultimaModificacion={ultimaModificacion}
-            />
-
+            <RegistroActividad ultimaModificacion={ultimaModificacion} />
         </section>
     );
 };

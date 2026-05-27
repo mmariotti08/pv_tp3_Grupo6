@@ -1,10 +1,14 @@
 import { useState } from "react";
 import proyectoService from "../services/proyectoService";
-import ProyectoCard from "./ProyectoCard"; 
+import ProyectoCard from "./ProyectoCard";
 import RegistroActividad from "./RegistroActividad";
+import FormularioProyecto from "./FormularioProyecto";
 
 const ListaProyectos = () => {
-    const [proyectos, setProyectos] = useState(proyectoService.obtenerProyectos());
+    const [proyectos, setProyectos] = useState(
+        proyectoService.obtenerProyectos()
+    );
+
     const [busqueda, setBusqueda] = useState("");
     const [titulo, setTitulo] = useState("");
     const [categoria, setCategoria] = useState("");
@@ -23,43 +27,31 @@ const ListaProyectos = () => {
         }
     };
 
-    const manejarAgregar = (evento) => {
-        evento.preventDefault();
-
-        if (titulo.trim() === "" || categoria.trim() === "" || estado.trim() === "") {
-            alert("Complete todos los campos");
-            return;
-        }
-
+    const manejarAgregar = (nuevoProyectoFormulario) => {
         const nuevoProyecto = {
             id: Date.now(),
-            titulo,
-            categoria,
-            estado
+            ...nuevoProyectoFormulario
         };
 
-        const listaActualizada = proyectoService.agregarProyecto(nuevoProyecto);
+        const listaActualizada =
+            proyectoService.agregarProyecto(nuevoProyecto);
 
         setProyectos(listaActualizada);
-        setTitulo("");
-        setCategoria("");
-        setEstado("");
         setBusqueda("");
-
         setUltimaModificacion(new Date());
-
     };
 
     const manejarEliminar = (id) => {
-        const listaActualizada = proyectoService.eliminarProyecto(id);
-        setProyectos(listaActualizada);
+        const listaActualizada =
+            proyectoService.eliminarProyecto(id);
 
+        setProyectos(listaActualizada);
         setUltimaModificacion(new Date());
-        
     };
 
     return (
         <section className="lista-proyectos">
+
             <h2>Lista de Proyectos</h2>
 
             <input
@@ -69,41 +61,22 @@ const ListaProyectos = () => {
                 onChange={manejarBusqueda}
             />
 
-            <form onSubmit={manejarAgregar}>
-                <input
-                    type="text"
-                    placeholder="Título"
-                    value={titulo}
-                    onChange={(evento) => setTitulo(evento.target.value)}
-                />
-
-                <input
-                    type="text"
-                    placeholder="Categoría"
-                    value={categoria}
-                    onChange={(evento) => setCategoria(evento.target.value)}
-                />
-
-                <input
-                    type="text"
-                    placeholder="Estado"
-                    value={estado}
-                    onChange={(evento) => setEstado(evento.target.value)}
-                />
-
-                <button type="submit">Agregar proyecto</button>
-            </form>
+            <FormularioProyecto
+                alAgregarProyecto={manejarAgregar}
+            />
 
             <div className="contenedor-proyectos">
-                {/* EL CAMBIO ESTÁ ACÁ: Renderizamos usando el componente de presentación */}
+
                 {proyectos.map((proyecto) => (
-                    <ProyectoCard 
-                        key={proyecto.id} 
-                        proyecto={proyecto} 
-                        alEliminar={manejarEliminar} 
+                    <ProyectoCard
+                        key={proyecto.id}
+                        proyecto={proyecto}
+                        alEliminar={manejarEliminar}
                     />
                 ))}
+
             </div>
+
             <RegistroActividad ultimaModificacion={ultimaModificacion} />
         </section>
     );

@@ -1,11 +1,10 @@
 import "../css/proyectoCard.css";
-const ProyectoCard = ({ proyecto, onEliminar, onDetalle }) => {
 
+const ProyectoCard = ({ proyecto, alEliminar, onDetalle }) => {
     const { id, titulo, categoria, estado } = proyecto;
 
     return (
         <article className="card-proyecto">
-
             <h3>{titulo}</h3>
 
             <p>
@@ -17,17 +16,14 @@ const ProyectoCard = ({ proyecto, onEliminar, onDetalle }) => {
             </p>
 
             <div className="botones-card">
-
-                <button onClick={() => onDetalle(proyecto)}>
+                <button type="button" onClick={() => onDetalle(proyecto)}>
                     Ver detalle
                 </button>
 
-                <button onClick={() => onEliminar(id)}>
+                <button type="button" onClick={() => alEliminar(id)}>
                     Eliminar
                 </button>
-
             </div>
-
         </article>
     );
 };

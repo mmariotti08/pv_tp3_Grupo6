@@ -11,9 +11,6 @@ const ListaProyectos = () => {
     );
 
     const [busqueda, setBusqueda] = useState("");
-    const [titulo, setTitulo] = useState("");
-    const [categoria, setCategoria] = useState("");
-    const [estado, setEstado] = useState(""); 
     const [ultimaModificacion, setUltimaModificacion] = useState(null);
     const [proyectoSeleccionado, setProyectoSeleccionado] = useState(null);
 
@@ -38,7 +35,7 @@ const ListaProyectos = () => {
             ...nuevoProyectoFormulario
         };
 
-        const listaActualizada =
+    const listaActualizada =
             proyectoService.agregarProyecto(nuevoProyecto);
 
         setProyectos(listaActualizada);

@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import proyectoService from "../services/proyectoService";
 import ProyectoCard from "./ProyectoCard"; 
-import DetalleProyecto from "./DetalleProyecto"; 
 import RegistroActividad from "./RegistroActividad";
 import FormularioProyecto from "./FormularioProyecto";
 
@@ -12,7 +11,6 @@ const ListaProyectos = () => {
 
     const [busqueda, setBusqueda] = useState("");
     const [ultimaModificacion, setUltimaModificacion] = useState(null);
-    const [proyectoSeleccionado, setProyectoSeleccionado] = useState(null);
 
     const esPrimerRender = useRef(true);
 
@@ -47,9 +45,6 @@ const ListaProyectos = () => {
         
         setProyectos(listaActualizada);
 
-        if (proyectoSeleccionado?.id === id) {
-            setProyectoSeleccionado(null);
-        }
     };
 
     
@@ -83,17 +78,12 @@ const ListaProyectos = () => {
                         key={proyecto.id} 
                         proyecto={proyecto} 
                         alEliminar={manejarEliminar} 
-                        onDetalle={setProyectoSeleccionado} 
                     />
                 ))}
             </div>
             
             <RegistroActividad ultimaModificacion={ultimaModificacion} />
 
-            <DetalleProyecto 
-                proyecto={proyectoSeleccionado} 
-                onCerrar={() => setProyectoSeleccionado(null)} 
-            />
 
             
         </section>

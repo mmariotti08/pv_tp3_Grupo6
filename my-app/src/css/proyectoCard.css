@@ -13,16 +13,36 @@
 .botones-card {
     display: flex;
     gap: 10px;
+    justify-content: center;
     margin-top: 15px;
 }
 
-.botones-card button {
-    padding: 10px;
-    border: none;
-    cursor: pointer;
+.boton-detalle,
+.boton-eliminar {
+    width: 120px;
+    padding: 10px 12px;
     border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
 }
 
-.botones-card button:hover {
-    opacity: 0.8;
+.boton-detalle {
+    background-color: #005baa;
+    color: white;
+}
+
+.boton-eliminar {
+    background-color: #ff4545;
+    color: white;
+}
+
+.boton-detalle:hover {
+    background-color: #004985;
+}
+
+.boton-eliminar:hover {
+    background-color: #d93636;
 }

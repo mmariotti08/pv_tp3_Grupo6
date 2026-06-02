@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import "./css/styles.css";
 import Header from "./components/Header";
 import Nav from "./components/Nav";
-import ListaProyectos from "./components/ListaProyectos";
+import ListaProyectos from "./views/ListaProyectos";
 import DetalleProyecto from "./views/DetalleProyecto";
 import Footer from "./components/Footer";
 import Dashboard from "./views/Dashboard";

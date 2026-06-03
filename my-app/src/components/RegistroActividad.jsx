@@ -1,33 +1,30 @@
-import "../css/RegistroActividad.css";
+import { Alert, AlertTitle, Box } from "@mui/material";
 
 const RegistroActividad = ({ ultimaModificacion }) => {
-
-    if (!ultimaModificacion) {
-        return (
-            <div className="registro-actividad">
-                <p>Aún no hay modificaciones en los proyectos.</p>
-            </div>
-        );
-    }
+    if (!ultimaModificacion) return null;
 
     const fecha = new Date(ultimaModificacion);
-
     const fechaFormateada = fecha.toLocaleDateString("es-AR");
-
-    const horaFormateada = fecha.toLocaleTimeString(
-        "es-AR",
-        {
-            hour: "2-digit",
-            minute: "2-digit"
-        }
-    );
+    const horaFormateada = fecha.toLocaleTimeString("es-AR", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
 
     return (
-        <div className="registro-actividad">
-            <p>
-                Última actualización de la lista: {fechaFormateada} a las {horaFormateada} hs.
-            </p>
-        </div>
+        <Box sx={{ width: "100%", marginTop: 3, marginBottom: 2 }}>
+            <Alert 
+                severity="info" 
+                variant="standard"
+                sx={{ 
+                    borderRadius: 2, 
+                    fontWeight: "500",
+                    boxShadow: 1
+                }}
+            >
+                <AlertTitle sx={{ fontWeight: "bold" }}>Registro de Actividad</AlertTitle>
+                Última actualización de la lista: <strong>{fechaFormateada}</strong> a las <strong>{horaFormateada} hs.</strong>
+            </Alert>
+        </Box>
     );
 };
 

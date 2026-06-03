@@ -1,19 +1,17 @@
 import { useState, useEffect, useRef } from "react";
+import { Container, Grid, TextField, Typography, Box } from "@mui/material";
 import proyectoService from "../services/proyectoService";
-import ProyectoCard from "../components/ProyectoCard";
-import RegistroActividad from "../components/RegistroActividad";
+import ProyectoCard from "../components/ProyectoCard"; 
 import FormularioProyecto from "../components/FormularioProyecto";
-const ListaProyectos = () => {
-    const [proyectos, setProyectos] = useState(
-        proyectoService.obtenerProyectos()
-    );
+import RegistroActividad from "../components/RegistroActividad";
 
+const ListaProyectos = () => {
+    const [proyectos, setProyectos] = useState(proyectoService.obtenerProyectos());
     const [busqueda, setBusqueda] = useState("");
     const [ultimaModificacion, setUltimaModificacion] = useState(null);
 
     const esPrimerRender = useRef(true);
 
- 
     useEffect(() => {
         if (esPrimerRender.current) {
             esPrimerRender.current = false;
@@ -32,8 +30,7 @@ const ListaProyectos = () => {
             ...nuevoProyectoFormulario
         };
 
-    const listaActualizada =
-            proyectoService.agregarProyecto(nuevoProyecto);
+        const listaActualizada = proyectoService.agregarProyecto(nuevoProyecto);
 
         setProyectos(listaActualizada);
         setBusqueda("");
@@ -41,12 +38,9 @@ const ListaProyectos = () => {
 
     const manejarEliminar = (id) => {
         const listaActualizada = proyectoService.eliminarProyecto(id);
-        
         setProyectos(listaActualizada);
-
     };
 
-    
     const proyectosFiltrados = proyectos.filter((proyecto) => {
         const query = busqueda.toLowerCase().trim();
         return (
@@ -56,36 +50,40 @@ const ListaProyectos = () => {
     });
 
     return (
-        <section className="lista-proyectos">
+        <Container maxWidth="lg" sx={{ py: 4 }}>
+            <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 'bold', mb: 3 }}>
+                Gestión de Proyectos
+            </Typography>
 
-            <h2>Lista de Proyectos</h2>
+            <FormularioProyecto alAgregarProyecto={manejarAgregar} />
 
-            <input
-                type="text"
-                placeholder="Buscar proyecto por título o categoría..."
-                value={busqueda}
-                onChange={manejarBusqueda}
-            />
+            <Box sx={{ my: 4 }}>
+                <TextField
+                    label="Buscar proyecto por título o categoría..."
+                    variant="outlined"
+                    fullWidth
+                    value={busqueda}
+                    onChange={manejarBusqueda}
+                />
+            </Box>
 
-            <FormularioProyecto
-                alAgregarProyecto={manejarAgregar}
-            />
+            <Typography variant="h5" component="h3" gutterBottom sx={{ fontWeight: '600', mb: 2 }}>
+                Lista de Proyectos
+            </Typography>
 
-            <div className="contenedor-proyectos">
+            <Grid container spacing={3}>
                 {proyectosFiltrados.map((proyecto) => (
-                    <ProyectoCard 
-                        key={proyecto.id} 
-                        proyecto={proyecto} 
-                        alEliminar={manejarEliminar} 
-                    />
+                    <Grid item xs={12} sm={6} md={4} key={proyecto.id}>
+                        <ProyectoCard 
+                            proyecto={proyecto} 
+                            alEliminar={manejarEliminar} 
+                        />
+                    </Grid>
                 ))}
-            </div>
+            </Grid>
             
             <RegistroActividad ultimaModificacion={ultimaModificacion} />
-
-
-            
-        </section>
+        </Container>
     );
 };
 

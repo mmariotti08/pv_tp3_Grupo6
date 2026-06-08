@@ -7,9 +7,11 @@ import DetalleProyecto from "./views/DetalleProyecto";
 import Footer from "./components/Footer";
 import Dashboard from "./views/Dashboard";
 import PerfilUsuario from "./views/PerfilUsuario";
+import { UsuarioProvider } from "./context/UsuarioContext";
 
 const App = () => {
     return (
+        <UsuarioProvider>
         <>
             <Header/>
             <Nav />
@@ -26,6 +28,7 @@ const App = () => {
 
             <Footer />
         </>
+        </UsuarioProvider>
     );
 };
 

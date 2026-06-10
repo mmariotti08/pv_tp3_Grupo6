@@ -46,3 +46,30 @@
 .boton-eliminar:hover {
     background-color: #d93636;
 }
+.estado-chip {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.estado-disponible {
+    background-color: #2e7d32;
+    color: white;
+}
+
+.estado-en-curso {
+    background-color: #fbc02d;
+    color: #333;
+}
+
+.estado-finalizado {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.estado-chip:hover {
+    opacity: 0.85;
+}

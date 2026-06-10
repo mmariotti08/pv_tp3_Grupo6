@@ -1,5 +1,6 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { UsuarioContext } from "../context/UsuarioContext";
+import proyectoService from "../services/proyectoService";
 import { Container, Typography, Box, Card, CardContent, Grid, TextField, Button, Alert, Paper } from "@mui/material";
 
 const Dashboard = () => {
@@ -7,6 +8,28 @@ const Dashboard = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
+
+    const [proyectos, setProyectos] = useState(
+        proyectoService.obtenerProyectos()
+    );
+
+useEffect(() => {
+        const actualizarProyectos = () => {
+            setProyectos(proyectoService.obtenerProyectos());
+        };
+
+        window.addEventListener("proyectosActualizados", actualizarProyectos);
+
+        return () => {
+            window.removeEventListener("proyectosActualizados", actualizarProyectos);
+        };
+    }, []);   
+
+    const totalProyectos = proyectos.length;
+
+    const proyectosEnCurso = proyectos.filter(
+        (proyecto) => proyecto.estado.toLowerCase() === "en curso"
+    ).length;
 
     const manejarEnvio = (e) => {
         e.preventDefault();
@@ -94,7 +117,7 @@ const Dashboard = () => {
                                 Total de proyectos
                             </Typography>
                             <Typography variant="h3">
-                                12
+                                    {totalProyectos}
                             </Typography>
                         </CardContent>
                     </Card>
@@ -107,7 +130,7 @@ const Dashboard = () => {
                                 Proyectos en curso
                             </Typography>
                             <Typography variant="h3">
-                                5
+                                {proyectosEnCurso}
                             </Typography>
                         </CardContent>
                     </Card>

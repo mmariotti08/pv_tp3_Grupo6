@@ -141,3 +141,150 @@ form button:hover {
 .card-proyecto button:hover {
     background-color: #cc0000;
 }
+.boton-estado {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #222;
+    transition: 0.2s ease;
+}
+
+.boton-estado.en-curso {
+    background-color: #fdd835;
+}
+
+.boton-estado.en-curso:hover {
+    background-color: #fbc02d;
+}
+
+.boton-estado.finalizado {
+    background-color: #e53935;
+    color: white;
+}
+
+.boton-estado.finalizado:hover {
+    background-color: #c62828;
+}
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #e3f2fd 0%, #f5f7fb 45%, #ffffff 100%);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#root {
+    min-height: 100vh;
+}
+
+header {
+    max-width: 1180px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #063970, #0d47a1);
+    color: white;
+    padding: 38px 42px !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+nav {
+    max-width: 1180px;
+    margin: 0 auto;
+    background-color: #0b63b6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    min-height: 52px;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    padding: 10px 16px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+    transform: translateY(-1px);
+}
+
+nav a.active {
+    background-color: rgba(255, 255, 255, 0.26);
+}
+
+main {
+    max-width: 1180px;
+    margin: 0 auto;
+    min-height: calc(100vh - 190px);
+    background: rgba(255, 255, 255, 0.92);
+    padding: 42px 0 70px;
+    box-shadow: 0 12px 30px rgba(13, 71, 161, 0.12);
+}
+
+main .MuiContainer-root {
+    animation: aparecer-suave 0.25s ease-in-out;
+}
+
+.MuiPaper-root {
+    border-radius: 18px !important;
+    border: 1px solid rgba(25, 118, 210, 0.12);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.10) !important;
+}
+
+.MuiInputBase-root {
+    border-radius: 10px !important;
+    background-color: #ffffff;
+}
+
+.MuiOutlinedInput-root:hover fieldset {
+    border-color: #1976d2 !important;
+}
+
+.MuiButton-containedPrimary {
+    background: linear-gradient(135deg, #1976d2, #0d47a1) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 5px 12px rgba(25, 118, 210, 0.28) !important;
+}
+
+.MuiButton-containedPrimary:hover {
+    background: linear-gradient(135deg, #0d47a1, #063970) !important;
+}
+
+.MuiCard-root {
+    border-radius: 16px !important;
+    border: 1px solid rgba(25, 118, 210, 0.10);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08) !important;
+}
+
+.MuiCard-root:hover {
+    box-shadow: 0 12px 26px rgba(25, 118, 210, 0.20) !important;
+}
+
+@keyframes aparecer-suave {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

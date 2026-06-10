@@ -1,25 +1,53 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from 'react';
 
 export const UsuarioContext = createContext();
 
 export const UsuarioProvider = ({ children }) => {
-    const [usuario, setUsuario] = useState({
-        nombre: "Benjamin Ortega",
-        dni: "12345678",
-        rol: "Alumno",
-        institucion: "Facultad de Ingeniería - UNJU"
-    });
-
-    const actualizarPerfil = (nuevosDatos) => {
-        setUsuario(nuevosDatos);
+    
+    const obtenerUsuarioInicial = () => {
+        const usuarioGuardado = localStorage.getItem("usuarioPerfil");
+        if (usuarioGuardado) {
+            return JSON.parse(usuarioGuardado);
+        }
+        return null;
     };
 
+    const [usuario, setUsuario] = useState(obtenerUsuarioInicial);
+
     useEffect(() => {
-        localStorage.setItem("usuario_session", JSON.stringify(usuario));
+        if (usuario) {
+            localStorage.setItem("usuarioPerfil", JSON.stringify(usuario));
+        } else {
+            localStorage.removeItem("usuarioPerfil");
+        }
     }, [usuario]);
 
+    const iniciarSesion = (email, password) => {
+        if (email === "benjamin@gmail.com" && password === "12345") {
+            setUsuario({
+                nombre: "Benjamin Ortega",
+                dni: "12345678",
+                rol: "Alumno",
+                institucion: "UNJu"
+            });
+            return true;
+        }
+        return false;
+    };
+
+    const cerrarSesion = () => {
+        setUsuario(null);
+    };
+  
+    const actualizarPerfil = (nuevosDatos) => {
+        setUsuario((estadoAnterior) => ({
+            ...estadoAnterior,
+            ...nuevosDatos
+        }));
+    };
+
     return (
-        <UsuarioContext.Provider value={{ usuario, actualizarPerfil }}>
+        <UsuarioContext.Provider value={{ usuario, iniciarSesion, cerrarSesion, actualizarPerfil }}>
             {children}
         </UsuarioContext.Provider>
     );

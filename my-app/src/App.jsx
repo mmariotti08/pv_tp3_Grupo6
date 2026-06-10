@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import { useContext } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import "./css/styles.css";
 import Header from "./components/Header";
 import Nav from "./components/Nav";
@@ -7,27 +8,45 @@ import DetalleProyecto from "./views/DetalleProyecto";
 import Footer from "./components/Footer";
 import Dashboard from "./views/Dashboard";
 import PerfilUsuario from "./views/PerfilUsuario";
-import { UsuarioProvider } from "./context/UsuarioContext";
+import { UsuarioContext, UsuarioProvider } from "./context/UsuarioContext";
 
-const App = () => {
+const AppContenido = () => {
+    const { usuario } = useContext(UsuarioContext);
+
     return (
-        <UsuarioProvider>
         <>
-            <Header/>
+            <Header />
             <Nav />
             
             <main>
                 <Routes>
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/proyectos" element={<ListaProyectos />} />
-                    <Route path="/proyectos/:id" element={<DetalleProyecto />} />
-                    <Route path="/perfil" element={<PerfilUsuario />} />
+                    
+                    <Route 
+                        path="/proyectos" 
+                        element={usuario ? <ListaProyectos /> : <Navigate to="/" />} 
+                    />
+                    <Route 
+                        path="/proyectos/:id" 
+                        element={usuario ? <DetalleProyecto /> : <Navigate to="/" />} 
+                    />
+                    <Route 
+                        path="/perfil" 
+                        element={usuario ? <PerfilUsuario /> : <Navigate to="/" />} 
+                    />
                 </Routes>
             </main>
 
             <Footer />
         </>
+    );
+};
+
+const App = () => {
+    return (
+        <UsuarioProvider>
+            <AppContenido />
         </UsuarioProvider>
     );
 };
